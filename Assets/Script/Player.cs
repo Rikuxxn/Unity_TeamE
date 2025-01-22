@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -21,13 +22,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float bulletSpeed = 20f;
     [SerializeField]
-    private float screenMargin = 0.1f; // 画面端からの余白を小さく調整
+    private float screenMargin = 0.1f;
     [SerializeField]
     private int maxHealth = 100;
     [SerializeField]
     private int currentHealth;
     [SerializeField]
-    private float invincibilityDuration = 1f; // 無敵時間
+    private float invincibilityDuration = 1f;
+    [SerializeField]
+    private HealthBar healthBar;
 
     private GameManager gameManager;
     private bool isInvincible = false;
@@ -40,6 +43,7 @@ public class Player : MonoBehaviour
     private float objectWidth;
     private float objectHeight;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -49,16 +53,13 @@ public class Player : MonoBehaviour
         }
         rb.useGravity = false;
         mainCamera = Camera.main;
-        // 体力を初期化
         currentHealth = maxHealth;
-        // オブジェクトのサイズを取得
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
             objectWidth = renderer.bounds.extents.x;
             objectHeight = renderer.bounds.extents.y;
         }
-        // GameManagerを取得
         gameManager = FindObjectOfType<GameManager>();
         if (gameManager == null)
         {
@@ -78,7 +79,6 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleRotationWithInertiaAndLimits();
         HandleShooting();
-        // 無敵時間の処理
         if (isInvincible)
         {
             invincibilityTimer += Time.deltaTime;
@@ -92,7 +92,6 @@ public class Player : MonoBehaviour
 
     private void UpdateScreenBounds()
     {
-        // カメラからの距離に基づいてスクリーン境界を計算
         float distanceToCamera = Mathf.Abs(mainCamera.transform.position.z - transform.position.z);
         Vector3 bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, distanceToCamera));
         Vector3 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, distanceToCamera));
@@ -109,20 +108,16 @@ public class Player : MonoBehaviour
         Vector3 viewPos = transform.position;
         Vector3 worldPosition = mainCamera.transform.position;
 
-        // X軸の制限（左右）
         float minX = worldPosition.x - screenBounds.x + objectWidth + screenMargin;
         float maxX = worldPosition.x + screenBounds.x - objectWidth - screenMargin;
         viewPos.x = Mathf.Clamp(viewPos.x, minX, maxX);
 
-        // Y軸の制限（上下）
         float minY = worldPosition.y - screenBounds.y + objectHeight + screenMargin;
         float maxY = worldPosition.y + screenBounds.y - objectHeight - screenMargin;
         viewPos.y = Mathf.Clamp(viewPos.y, minY, maxY);
 
-        // 位置を更新
         transform.position = viewPos;
 
-        // 画面端での速度調整
         if (viewPos.x == minX || viewPos.x == maxX)
         {
             rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
@@ -227,9 +222,13 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     public void TakeDamage(int damage)
     {
+        if (isInvincible) return;
+
         currentHealth -= damage;
+        healthBar.UpdateHealth(currentHealth, maxHealth);  // この行を追加
         Debug.Log($"Player took {damage} damage. Current Health: {currentHealth}/{maxHealth}");
 
         if (currentHealth <= 0)
@@ -241,7 +240,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Debug.LogWarning("Player Died!");
-        // GameManagerにゲームオーバーを通知
         if (gameManager != null)
         {
             gameManager.GameOver();
@@ -252,8 +250,7 @@ public class Player : MonoBehaviour
     {
         int oldHealth = currentHealth;
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-
-        // 回復時の体力をデバッグ出力
+        healthBar.UpdateHealth(currentHealth, maxHealth);  // この行を追加
         Debug.Log($"Player healed {currentHealth - oldHealth} HP. Current Health: {currentHealth}/{maxHealth}");
     }
 }
