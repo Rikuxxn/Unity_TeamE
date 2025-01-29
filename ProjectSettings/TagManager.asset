@@ -7,6 +7,9 @@ TagManager:
   - RoutePoint
   - Enemy
   - EnemyBullet
+  - Camera
+  - Boss
+  - StopPoint
   layers:
   - Default
   - TransparentFX

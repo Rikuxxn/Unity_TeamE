@@ -101,4 +101,11 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
+
+    // í«â¡: âÊñ äOÇ…èoÇΩÇÁçÌèú
+    private void OnBecameInvisible()
+    {
+        Debug.Log("Enemy went off-screen and was destroyed.");
+        Destroy(gameObject);
+    }
 }

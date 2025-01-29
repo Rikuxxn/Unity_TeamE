@@ -6,7 +6,9 @@ using UnityEngine;
 public class GameCamera : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 5f;
+    private float speed = 10f;
+
+    private bool canMoveForward = true;
 
     void Update()
     {
@@ -15,6 +17,15 @@ public class GameCamera : MonoBehaviour
 
     private void MoveForward()
     {
-        transform.position += Vector3.forward * speed * Time.deltaTime;
+        if (canMoveForward)
+        {
+            transform.position += Vector3.forward * speed * Time.deltaTime;
+        }
+    }
+
+    // 外部からカメラの移動を停止させるためのメソッド
+    public void StopMoving()
+    {
+        canMoveForward = false;
     }
 }

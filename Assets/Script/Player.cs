@@ -31,7 +31,11 @@ public class Player : MonoBehaviour
     private float invincibilityDuration = 1f;
     [SerializeField]
     private HealthBar healthBar;
+    [SerializeField]
+    private float terrainDamageInterval = 0.5f; // Terrainからダメージを受ける間隔
+    private float lastTerrainDamageTime; // 最後にTerrainダメージを受けた時間
 
+    private bool canMoveForward = true; // 前進可能フラグを追加
     private GameManager gameManager;
     private bool isInvincible = false;
     private float invincibilityTimer = 0f;
@@ -42,7 +46,10 @@ public class Player : MonoBehaviour
     private Vector3 screenBounds;
     private float objectWidth;
     private float objectHeight;
-
+    public bool CanMoveForward()
+    {
+        return canMoveForward;
+    }
 
     void Start()
     {
@@ -127,12 +134,30 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
     }
-
     private void MoveForward()
     {
-        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
+        if (canMoveForward)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
+        }
+        else
+        {
+            // 前進を停止（左右移動は可能）
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+        }
     }
 
+    // ストップポイントとの接触を検知
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("StopPoint"))
+        {
+            canMoveForward = false;
+            // メインカメラのGameCameraコンポーネントを取得して停止
+            Camera.main.GetComponent<GameCamera>().StopMoving();
+            Debug.Log("Player stopped at checkpoint");
+        }
+    }
     private void HandleMovement()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -252,5 +277,22 @@ public class Player : MonoBehaviour
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         healthBar.UpdateHealth(currentHealth, maxHealth);  // この行を追加
         Debug.Log($"Player healed {currentHealth - oldHealth} HP. Current Health: {currentHealth}/{maxHealth}");
+    }
+    void OnTriggerStay(Collider other)
+    {
+        // Terrainとの接触を検知
+        if (other.GetComponent<Terrain>() != null)
+        {
+            // 無敵時間中でなく、かつダメージ間隔を超えている場合
+            if (!isInvincible && Time.time - lastTerrainDamageTime >= terrainDamageInterval)
+            {
+                TakeDamage(10);
+                lastTerrainDamageTime = Time.time;
+
+                // 既存の無敵時間処理を活用
+                isInvincible = true;
+                invincibilityTimer = 0f;
+            }
+        }
     }
 }

@@ -1,32 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class FadeManager : MonoBehaviour
 {
-    public enum SCENE//シーンの種類
-    {
-        TITLE=0,
-        TUTORIAL,
-        STAGE1,
-        STAGE2,
-        MAX,
-    };
+    public enum SCENE { TITLE = 0, TUTORIAL, STAGE1, STAGE2, MAX };
 
-    float Speed = 0.01f;        //フェードするスピード
+    float Speed = 0.01f;
     float red, green, blue, alfa;
     int nCnt = 0;
-    public SCENE gameScene/* = SCENE.SCENE_TITLE*/;
+    public SCENE gameScene;
     bool bStart = false;
     bool bEnter = false;
 
     public bool Out = false;
     public bool In = false;
 
-    Image fadeImage;                //パネ
-    // Start is called before the first frame update
+    Image fadeImage;
+
     void Start()
     {
         fadeImage = GetComponent<Image>();
@@ -34,53 +25,43 @@ public class FadeManager : MonoBehaviour
         green = fadeImage.color.g;
         blue = fadeImage.color.b;
         alfa = fadeImage.color.a;
+
+        // シーンロードリスナー登録
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // Update is called once per frame
+    void OnDestroy()
+    {
+        // シーンロードリスナー解除
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && bEnter == false) 
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && !bEnter)
         {
             Out = true;
             bEnter = true;
         }
 
-        if (In && bEnter == false)
-        {
+        if (In && !bEnter)
             FadeIn();
-        }
-        if (Out && bEnter == true)
-        {
-            FadeOut();
-        }
 
-        if (bStart == true)
+        if (Out && bEnter)
+            FadeOut();
+
+        if (bStart)
         {
             nCnt++;
-        }
-        if(nCnt>=60)
-        {
-            switch (gameScene)
+            if (nCnt >= 60)
             {
-                case SCENE.TITLE:
-                    SceneManager.LoadScene("TitleScene");
-                    break;
-                case SCENE.TUTORIAL:
-                    SceneManager.LoadScene("aScene");
-                    break;
-                case SCENE.STAGE1:
-                    SceneManager.LoadScene("StageScene1");
-                    break;
-                case SCENE.STAGE2:
-                    SceneManager.LoadScene("StageScene2");
-                    break;
+                LoadScene();
+                bStart = false;
+                nCnt = 0;
             }
-            In = true;
-            bStart = false;
-            nCnt = 0;
         }
-
     }
+
     void FadeIn()
     {
         alfa -= Speed;
@@ -98,17 +79,52 @@ public class FadeManager : MonoBehaviour
         fadeImage.enabled = true;
         alfa += Speed;
         Alpha();
-        if (alfa >= 1)
+        if (alfa >= 1 && Out)
         {
             bStart = true;
             Out = false;
-            //SceneManager.LoadScene("SampleScene");
-            //In = true;
         }
     }
 
     void Alpha()
     {
         fadeImage.color = new Color(red, green, blue, alfa);
+    }
+
+    void LoadScene()
+    {
+        switch (gameScene)
+        {
+            case SCENE.TITLE:
+                SceneManager.LoadScene("TitleScene");
+                break;
+            case SCENE.TUTORIAL:
+                SceneManager.LoadScene("aScene");
+                break;
+            case SCENE.STAGE1:
+                SceneManager.LoadScene("StageScene1");
+                break;
+            case SCENE.STAGE2:
+                SceneManager.LoadScene("StageScene2");
+                break;
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "StageScene1" || scene.name == "StageScene2")
+        {
+            InitializeCamera();
+        }
+    }
+
+    void InitializeCamera()
+    {
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            mainCamera.transform.position = new Vector3(0, 57, -652);
+            mainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 }
