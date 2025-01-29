@@ -39,7 +39,7 @@ public class FadeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return) && bEnter == false)
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) && bEnter == false) 
         {
             Out = true;
             bEnter = true;
