@@ -189,8 +189,21 @@ public class Boss : MonoBehaviour
     private void Die()
     {
         Debug.Log("Boss died!");
+
+        // GameManager を探してゲームクリア処理を実行
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.GameClear();
+        }
+        else
+        {
+            Debug.LogError("GameManager がシーン内に見つかりません！");
+        }
+
         Destroy(gameObject);
     }
+
 
     private void OnDrawGizmosSelected()
     {

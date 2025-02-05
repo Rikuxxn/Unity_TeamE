@@ -5588,6 +5588,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 92684959885424247, guid: b9d574a2f61a55743ac958d32d9028c4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6168102980477087465, guid: b9d574a2f61a55743ac958d32d9028c4, type: 3}
       propertyPath: m_Name
       value: AlienFighterGreen
@@ -16044,13 +16048,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3870707697836858079, guid: 819666611ec58f5449ba5f518b55e47b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5035260823553478074, guid: 819666611ec58f5449ba5f518b55e47b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.4
       objectReference: {fileID: 0}
     - target: {fileID: 5035260823553478074, guid: 819666611ec58f5449ba5f518b55e47b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29
+      value: 35.5
       objectReference: {fileID: 0}
     - target: {fileID: 5035260823553478074, guid: 819666611ec58f5449ba5f518b55e47b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31819,11 +31827,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 48
+      value: -11.6
       objectReference: {fileID: 0}
     - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 67.2
+      value: 60.2
       objectReference: {fileID: 0}
     - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -79432,6 +79440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverUI: {fileID: 627403114}
+  gameClearUI: {fileID: 0}
 --- !u!4 &1155421644
 Transform:
   m_ObjectHideFlags: 0
@@ -89368,6 +89377,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1168763732947651011, guid: a2ab21971f60a3540a447296d6f2d906, type: 3}
+      propertyPath: maxHealth
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5176211074065200935, guid: a2ab21971f60a3540a447296d6f2d906, type: 3}
       propertyPath: m_Name
       value: AlienDestroyerGreen
@@ -99554,9 +99567,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienDestroyer (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2867242099867319319, guid: 0d5381763a1fa5745aaf8ffdd9cef1f7, type: 3}
+      propertyPath: maxHealth
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4233918944531357187, guid: 0d5381763a1fa5745aaf8ffdd9cef1f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34.482098
+      value: 18.6
       objectReference: {fileID: 0}
     - target: {fileID: 4233918944531357187, guid: 0d5381763a1fa5745aaf8ffdd9cef1f7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -101212,6 +101229,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5bc9c68b6d707a49b7da8448a7df0b9, type: 3}
+--- !u!1001 &1676019011
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1680081281835241498, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_Name
+      value: AlienFighter (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 27.637424
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 54.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -249.8375
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7088842571505652080, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8705be47cfab37b4eb099d8336384bc6, type: 3}
 --- !u!4 &1676474326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7843983946256705530, guid: 2f2cf1784cb4e4248ada9ad09123e7cf, type: 3}
@@ -127630,3 +127704,4 @@ SceneRoots:
   - {fileID: 311599102}
   - {fileID: 1965749478}
   - {fileID: 89975562}
+  - {fileID: 1676019011}
