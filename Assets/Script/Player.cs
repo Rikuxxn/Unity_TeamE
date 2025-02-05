@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float maxRotationAngle = 70f;
     [SerializeField]
+    private Transform shootPoint; // íeÇî≠éÀÇ∑ÇÈà íu
+    [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
     private float bulletSpeed = 20f;
@@ -219,12 +221,11 @@ public class Player : MonoBehaviour
 
         transform.Rotate(Vector3.forward, currentRotationVelocity * Time.deltaTime);
     }
-
     private void HandleShooting()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             Vector3 targetPoint;
 
@@ -237,8 +238,9 @@ public class Player : MonoBehaviour
                 targetPoint = ray.GetPoint(1000f);
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            Vector3 shootDirection = (targetPoint - transform.position).normalized;
+            // íeÇShootPointÇ©ÇÁî≠éÀ
+            GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
+            Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
 
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
             if (bulletRb != null)
@@ -277,6 +279,12 @@ public class Player : MonoBehaviour
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         healthBar.UpdateHealth(currentHealth, maxHealth);  // Ç±ÇÃçsÇí«â¡
         Debug.Log($"Player healed {currentHealth - oldHealth} HP. Current Health: {currentHealth}/{maxHealth}");
+    }
+
+    public void StopMoving()
+    {
+        canMoveForward = false;
+        Debug.Log("Player stopped at checkpoint");
     }
     void OnTriggerStay(Collider other)
     {
